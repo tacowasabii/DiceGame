@@ -1,9 +1,12 @@
+import Button from "./Button";
 import Dice from "./Dice";
 
 function App() {
   return (
     <div>
-      <Dice color="blue" />
+      <Button>던지기</Button>
+      <Button>처음부터</Button>
+      <Dice color="red" num={4} />
     </div>
   );
 }
