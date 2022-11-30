@@ -1,42 +1,79 @@
 import { useState } from "react";
 import Button from "./Button";
-import Dice from "./Dice";
+import HandButton from "./HandButton";
+import HandIcon from "./HandIcon";
+import { compareHand, generateRandomHand } from "./utils";
 
-function random(n) {
-  return Math.ceil(Math.random() * n);
+const INITIAL_VALUE = "rock";
+
+function getResult(me, other) {
+  const comparison = compareHand(me, other);
+  if (comparison > 0) return "승리";
+  if (comparison < 0) return "패배";
+  return "무승부";
 }
 
 function App() {
-  const [num, setNum] = useState(1);
-  const [sum, setSum] = useState(0);
+  const [hand, setHand] = useState(INITIAL_VALUE);
+  const [otherHand, setOtherHand] = useState(INITIAL_VALUE);
   const [gameHistory, setGameHistory] = useState([]);
+  const [score, setScore] = useState(0);
+  const [otherScore, setOtherScore] = useState(0);
+  const [bet, setBet] = useState(1);
 
-  const handleRollClick = () => {
-    const nextNum = random(6);
-    setNum(nextNum);
-    setSum(sum + nextNum);
-    setGameHistory([...gameHistory, nextNum]);
+  const handleButtonClick = (nextHand) => {
+    const nextOtherHand = generateRandomHand();
+    const nextHistoryItem = getResult(nextHand, nextOtherHand);
+    const comparison = compareHand(nextHand, nextOtherHand);
+    setHand(nextHand);
+    setOtherHand(nextOtherHand);
+    setGameHistory([...gameHistory, nextHistoryItem]);
+    if (comparison > 0) setScore(score + bet);
+    if (comparison < 0) setOtherScore(otherScore + bet);
   };
 
   const handleClearClick = () => {
-    setNum(1);
-    setSum(0);
+    setHand(INITIAL_VALUE);
+    setOtherHand(INITIAL_VALUE);
     setGameHistory([]);
+    setScore(0);
+    setOtherScore(0);
+    setBet(1);
+  };
+
+  const handleBetChange = (e) => {
+    let num = Number(e.target.value);
+    if (num > 9) num %= 10; // 1과 9 사이의 숫자로 만들어 줌
+    if (num < 1) num = 1;
+    num = Math.floor(num);
+    setBet(num);
   };
 
   return (
     <div>
+      <Button onClick={handleClearClick}>처음부터</Button>
       <div>
-        <Button onClick={handleRollClick}>던지기</Button>
-        <Button onClick={handleClearClick}>처음부터</Button>
+        {score} : {otherScore}
       </div>
       <div>
-        <h2>나</h2>
-        <Dice color="blue" num={num} />
-        <h2>총점</h2>
-        <p>{sum}</p>
-        <h2>기록</h2>
-        {gameHistory.join(", ")}
+        <HandIcon value={hand} />
+        VS
+        <HandIcon value={otherHand} />
+      </div>
+      <div>
+        <input
+          type="number"
+          value={bet}
+          min={1}
+          max={9}
+          onChange={handleBetChange}
+        ></input>
+      </div>
+      <p>승부 기록: {gameHistory.join(", ")}</p>
+      <div>
+        <HandButton value="rock" onClick={handleButtonClick} />
+        <HandButton value="scissor" onClick={handleButtonClick} />
+        <HandButton value="paper" onClick={handleButtonClick} />
       </div>
     </div>
   );
