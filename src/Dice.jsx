@@ -10,6 +10,7 @@ import diceRed03 from "./assets/dice-red-3.svg";
 import diceRed04 from "./assets/dice-red-4.svg";
 import diceRed05 from "./assets/dice-red-5.svg";
 import diceRed06 from "./assets/dice-red-6.svg";
+import styled from "styled-components";
 
 const DICE_IMAGES = {
   blue: [
@@ -23,9 +24,16 @@ const DICE_IMAGES = {
   red: [diceRed01, diceRed02, diceRed03, diceRed04, diceRed05, diceRed06],
 };
 
-function Dice({ color, num }) {
+function Dice({ color = "blue", num = 1 }) {
   const src = DICE_IMAGES[color][num - 1];
   const alt = `${color} ${num}`;
-  return <img src={src} alt={alt} />;
+  return <DiceCss src={src} alt={alt} />;
 }
+
+const DiceCss = styled.img`
+  width: 100%;
+  max-width: 100px;
+  max-height: 100px;
+`;
+
 export default Dice;

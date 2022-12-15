@@ -1,0 +1,4 @@
+.Board.Board-winner {
+  border: 1px solid #fff;
+  box-shadow: 0 0 12px 0 hsla(0, 0%, 100%, 0.48);
+}
