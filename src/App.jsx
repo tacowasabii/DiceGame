@@ -74,7 +74,7 @@ const MainContainer = styled.div`
     cursor: pointer;
     margin: 6px;
   }
-  & > div > Button:nth-child(3) {
+  & > div > :nth-child(3) {
     border: 1px solid #7090ff;
     color: #7090ff;
     background-color: rgba(0, 89, 255, 0.2);
@@ -82,7 +82,7 @@ const MainContainer = styled.div`
       background-color: rgba(0, 89, 255, 0.3);
     }
   }
-  & > div > Button:nth-child(4) {
+  & > div > :nth-child(4) {
     border: 1px solid #ff4664;
     color: #ff4664;
     background-color: rgba(255, 78, 78, 0.2);
